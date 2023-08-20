@@ -33,7 +33,7 @@ function App() {
             location={userInfo.location}
           />
           <hr />
-          <AddEducationSection educations={userInfo.educations} />
+          {/* <AddEducationSection educations={userInfo.educations} /> */}
         </div>
       </div>
       <Resume personalInfo={userInfo} />
