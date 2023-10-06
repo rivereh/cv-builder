@@ -15,8 +15,20 @@ html {
   color: white;
   display: flex;
   flex-direction: column;
+  gap: 5px;
   align-items: center;
   justify-content: center;
   font-family: 'Franklin Gothic Medium';
+}
+
+.resume-header .info {
+  display: flex;
+  gap: 10px;
+}
+
+.resume-header .info .info-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 

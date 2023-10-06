@@ -7,93 +7,16 @@ import MonthList from './MonthList'
 import Gallery from './Gallery'
 import Form from './Form'
 import { defaultUser } from './defaultUser'
-
-// function ListItem(props) {
-//   return <li>{props.animal}</li>
-// }
-
-// function List(props) {
-//   if (!props.animals) {
-//     return <div>Loading...</div>
-//   }
-
-//   if (props.animals.length === 0) {
-//     return <div>There are no animals in the list!</div>
-//   }
-
-//   return (
-//     <ul>
-//       {props.animals.map((animal) => {
-//         // return <ListItem key={animal} animal={animal} />
-//         // return animal.startsWith('L') ? <li key={animal}>{animal}</li> : null
-//         // return animal.startsWith('L') && <li key={animal}>{animal}</li>
-//         return <li key={animal}>{animal}</li>
-//       })}
-//     </ul>
-//   )
-// }
-
-{
-  /* <div> */
-}
-// <h1>Animals</h1>
-{
-  /* <ul> */
-}
-{
-  /* {animals.map((animal) => {
-      return <li key={animal}>{animal}</li>
-    })} */
-}
-{
-  /* {animalsList} */
-}
-{
-  /* </ul> */
-}
-{
-  /* <List animals={animals} /> */
-}
-{
-  /* </div> */
-}
-
-function Button({
-  text = 'Select',
-  color = 'Blue',
-  fontSize = 12,
-  handleClick
-}) {
-  const buttonStyle = {
-    color: color,
-    fontSize: fontSize + 'px'
-  }
-
-  return (
-    <button
-      onClick={() => handleClick('https://www.google.com')}
-      style={buttonStyle}
-    >
-      {text}
-    </button>
-  )
-}
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone'
+import LocationOnIcon from '@mui/icons-material/LocationOn'
+import EmailIcon from '@mui/icons-material/Email'
 
 function App() {
-  // const animals = ['Lion', 'Cow', 'Snake', 'Lizard']
-  // const animalsList = animals.map((animal) => <li key={animal}>{animal}</li>)
-
-  // const handleButtonClick = (url) => {
-  //   window.location.href = url
-  // }
-
-  // return <TodoList />
-
   const [firstName, setFirstName] = useState(defaultUser.firstName)
   const [lastName, setLastName] = useState(defaultUser.lastName)
   const [email, setEmail] = useState(defaultUser.email)
   const [mobile, setMobile] = useState(defaultUser.mobile)
-  const [location, setLocation] = useState(defaultUser.email)
+  const [location, setLocation] = useState(defaultUser.location)
 
   function handleFirstNameChange(e) {
     setFirstName(e.target.value)
@@ -103,26 +26,48 @@ function App() {
     setLastName(e.target.value)
   }
 
+  function handleEmailChange(e) {
+    setEmail(e.target.value)
+  }
+
+  function handleMobileChange(e) {
+    setMobile(e.target.value)
+  }
+
+  function handleLocationChange(e) {
+    setLocation(e.target.value)
+  }
+
   function handleReset() {
     setFirstName('')
     setLastName('')
+    setEmail('')
   }
 
   return (
     <>
-      {/* <MonthList />
-      <Button text='Click me' color='blue' fontSize={20} />
-      <Button text="Don't click me" color='red' fontSize={10} />
-      <Button handleClick={handleButtonClick} /> */}
-
-      {/* <Gallery /> */}
-      {/* <Form /> */}
-
       <div className='resume'>
         <div className='resume-header'>
           <h1>
             {firstName} {lastName}
           </h1>
+          <div className='info'>
+            {email && (
+              <p className='info-item'>
+                <EmailIcon sx={{ width: 16, height: 16 }} /> {email}
+              </p>
+            )}
+            {mobile && (
+              <p className='info-item'>
+                <LocalPhoneIcon sx={{ fontSize: 16 }} /> {mobile}
+              </p>
+            )}
+            {location && (
+              <p className='info-item'>
+                <LocationOnIcon sx={{ fontSize: 16 }} /> {location}
+              </p>
+            )}
+          </div>
         </div>
       </div>
       <form onSubmit={(e) => e.preventDefault()}>
@@ -136,9 +81,20 @@ function App() {
           value={lastName}
           onChange={handleLastNameChange}
         />
-        <h1>
-          Hello, {firstName} {lastName}
-        </h1>
+        <br />
+        <input placeholder='Email' value={email} onChange={handleEmailChange} />
+        <br />
+        <input
+          placeholder='Phone number'
+          value={mobile}
+          onChange={handleMobileChange}
+        />
+        <br />
+        <input
+          placeholder='Location'
+          value={location}
+          onChange={handleLocationChange}
+        />
         <button onClick={handleReset}>Reset</button>
       </form>
     </>
