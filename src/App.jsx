@@ -10,13 +10,21 @@ import { defaultUser } from './defaultUser'
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import EmailIcon from '@mui/icons-material/Email'
+import EducationForm from './EducationForm'
 
 function App() {
-  const [firstName, setFirstName] = useState(defaultUser.firstName)
-  const [lastName, setLastName] = useState(defaultUser.lastName)
-  const [email, setEmail] = useState(defaultUser.email)
-  const [mobile, setMobile] = useState(defaultUser.mobile)
-  const [location, setLocation] = useState(defaultUser.location)
+  const [userInfo, setUserInfo] = useState(defaultUser)
+  const [educationInfo, setEducationInfo] = useState(defaultUser.education)
+  const [firstName, setFirstName] = useState(userInfo.firstName)
+  const [lastName, setLastName] = useState(userInfo.lastName)
+  const [email, setEmail] = useState(userInfo.email)
+  const [mobile, setMobile] = useState(userInfo.mobile)
+  const [location, setLocation] = useState(userInfo.location)
+
+  function handleEducationFormChange(e) {
+    const { key } = e.target.dataset
+    setEducationInfo({ ...educationInfo, [key]: e.target.value })
+  }
 
   function handleFirstNameChange(e) {
     setFirstName(e.target.value)
@@ -97,6 +105,12 @@ function App() {
         />
         <button onClick={handleReset}>Reset</button>
       </form>
+
+      <EducationForm
+        educationInfo={educationInfo}
+        onChange={handleEducationFormChange}
+      />
+      <h1>{educationInfo.universityName}</h1>
     </>
   )
 }
