@@ -1,11 +1,63 @@
 html {
   background-color: #ccc;
+  font-family: 'Segoe UI';
+}
+
+.container {
+  padding-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
 }
 
 .resume {
   background-color: #fff;
   width: 17cm;
   height: 22cm;
+}
+
+.forms {
+  width: 400px;
+}
+
+.experience {
+  margin-bottom: 5px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  width: 80%;
+}
+
+.experience-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.experience .description {
+  margin-top: 5px;
+  font-size: 0.8rem;
+}
+
+.experience .position, .education-info .degree {
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.experience:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.experience .bold,
+.education .bold {
+  font-weight: bold;
+}
+
+.forms input {
+  display: block;
+  margin: 10px 0;
+  padding: 5px;
+  width: 100%;
 }
 
 .resume-header {
@@ -18,7 +70,7 @@ html {
   gap: 5px;
   align-items: center;
   justify-content: center;
-  font-family: 'Franklin Gothic Medium';
+  /* font-family: 'Franklin Gothic Medium'; */
 }
 
 .resume-header .info {
@@ -32,3 +84,40 @@ html {
   gap: 5px;
 }
 
+/* .education-info .right-side {
+  display: flex;
+  flex-direction: column;
+} */
+
+.education,
+.experiences {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 25px;
+  align-items: center;
+}
+
+.education h3,
+.experiences h3 {
+  background-color: #eef1f2;
+  width: 80%;
+  text-align: center;
+}
+
+.education-info {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+}
+
+.education-info .right-side,
+.experiences .right-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.experience-form textarea {
+  width: 100%;
+}

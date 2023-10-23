@@ -8,6 +8,19 @@ const EducationForm = ({ educationInfo, onChange }) => {
           onChange={onChange}
           data-key='universityName'
         />
+        {/* <br /> */}
+        <input
+          placeholder='Degree'
+          value={educationInfo.degree}
+          onChange={onChange}
+          data-key='degree'
+        />
+        {/* <br /> */}
+        <input
+          value={educationInfo.startDate}
+          onChange={onChange}
+          data-key='startDate'
+        />
       </form>
     </>
   )

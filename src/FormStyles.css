@@ -1,0 +1,50 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #17181f;
+  color: #aaa;
+}
+
+.main {
+  max-width: 300px;
+  margin: 20px auto;
+}
+
+form {
+  border: 3px solid #30313d;
+  border-radius: 10px;
+  padding-left: 5px;
+  display: flex;
+}
+
+form input[type='text'] {
+  background: none;
+  border: 0;
+  padding: 5px 8px;
+  color: #aaa;
+  display: block;
+  width: 100%;
+}
+
+form button {
+  background-color: #61dafb;
+  border: 0;
+  padding: 0px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.task {
+  background-color: #30313d;
+  border-radius: 10px;
+  padding: 5px 9px;
+  margin-top: 5px;
+  display: flex;
+}
+
+.task svg {
+  height: 20px;
+  margin-right: 4px;
+}
