@@ -25,6 +25,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Stack from '@mui/material/Stack'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
 import Button from '@mui/material/Button'
+import '@fontsource/roboto/300.css'
+import '@fontsource/roboto/400.css'
+import '@fontsource/roboto/500.css'
+import '@fontsource/roboto/700.css'
 
 function App() {
   const [userInfo, setUserInfo] = useState(defaultUser)
@@ -35,7 +39,7 @@ function App() {
   const [mobile, setMobile] = useState(userInfo.mobile)
   const [location, setLocation] = useState(userInfo.location)
   const [experiences, setExperiences] = useState(userInfo.experiences)
-  const [expanded, setExpanded] = useState('')
+  const [projects, setProjects] = useState(userInfo.projects)
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false)
@@ -87,6 +91,21 @@ function App() {
     })
   }
 
+  function handleProjectFormChange(e) {
+    const key = e.target.name
+    const id = e.target.id
+    const value = e.target.value
+
+    setProjects((prevProjects) => {
+      return prevProjects.map((project) => {
+        if (project.id == id) {
+          return { ...project, [key]: value }
+        }
+        return project
+      })
+    })
+  }
+
   function handleAddExperienceForm() {
     let newExperience = {
       id: uuid(),
@@ -95,8 +114,18 @@ function App() {
       startDate: '',
       endDate: '',
       location: '',
+      description: '',
     }
     setExperiences([...experiences, newExperience])
+  }
+
+  function handleAddProjectForm() {
+    let newProject = {
+      id: uuid(),
+      name: '',
+      description: '',
+    }
+    setProjects([...projects, newProject])
   }
 
   function handleRemoveExperienceForm(e) {
@@ -105,6 +134,14 @@ function App() {
       return experience.id !== id
     })
     setExperiences(newExperiences)
+  }
+
+  function handleRemoveProjectForm(e) {
+    const id = e.target.getAttribute('id')
+    const newProjects = projects.filter((experience) => {
+      return experience.id !== id
+    })
+    setProjects(newProjects)
   }
 
   // function addExperienceForm(experience) {
@@ -167,14 +204,18 @@ function App() {
           onChange={handleEducationFormChange}
         />
 
-        <h2>Experiences</h2>
+        <Typography variant='h5' sx={{ marginTop: 1 }}>
+          Experiences
+        </Typography>
 
         {experiences.map((experience) => (
           // <ExperienceForm key={experience.id} experience={experience} />
           <div key={experience.id} className='experience-form'>
             <Accordion>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>{experience.employer ? experience.employer : 'Experience'}</Typography>
+                <Typography>
+                  {experience.employer ? experience.employer : 'Experience'}
+                </Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Stack spacing={2}>
@@ -245,6 +286,55 @@ function App() {
         >
           Add Experience
         </Button>
+        <Typography variant='h5' sx={{ marginTop: 1 }}>
+          Projects
+        </Typography>
+        {projects.map((project) => (
+          // <ExperienceForm key={experience.id} experience={experience} />
+          <div key={project.id} className='experience-form'>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography>
+                  {project.name ? project.name : 'Project'}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Stack spacing={2}>
+                  <TextField
+                    value={project.name}
+                    label='Project Name'
+                    name='name'
+                    id={project.id}
+                    onChange={handleProjectFormChange}
+                  />
+                  <TextareaAutosize
+                    minRows={3}
+                    value={project.description}
+                    name='description'
+                    id={project.id}
+                    onChange={handleProjectFormChange}
+                  />
+                  <Button
+                    id={project.id}
+                    onClick={handleRemoveProjectForm}
+                    variant='contained'
+                    color='error'
+                    startIcon={<DeleteIcon />}
+                  >
+                    Delete Project
+                  </Button>
+                </Stack>
+              </AccordionDetails>
+            </Accordion>
+          </div>
+        ))}
+        <Button
+          onClick={handleAddProjectForm}
+          variant='contained'
+          startIcon={<AddIcon />}
+        >
+          Add Project
+        </Button>
       </div>
       <div className='resume'>
         <div className='resume-header'>
@@ -285,7 +375,7 @@ function App() {
           </div>
         </div>
         <div className='experiences'>
-          <h3>Experiences</h3>
+          <h3>Experience</h3>
           {experiences.map((experience) => (
             <div key={experience.id} className='experience'>
               <div className='experience-info'>
@@ -301,6 +391,15 @@ function App() {
                 </div>
               </div>
               <p className='description'>{experience.description}</p>
+            </div>
+          ))}
+        </div>
+        <div className='experiences'>
+          <h3>Software Projects</h3>
+          {projects.map((project) => (
+            <div key={project.id} className='experience'>
+              <p className='bold'>{project.name}</p>
+              <p className='description'>{project.description}</p>
             </div>
           ))}
         </div>

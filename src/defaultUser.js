@@ -35,4 +35,18 @@ export const defaultUser = {
         'In my role as a Front-End Developer, I created responsive user interfaces with HTML, CSS, and JavaScript, ensuring a seamless user experience while integrating third-party APIs and libraries to enhance website functionality. I also conducted usability testing and addressed front-end issues to improve load times and overall usability.',
     },
   ],
+  projects: [
+    {
+      id: uuid(),
+      name: 'Web appliction',
+      description:
+        'Led the development and launch of a successful web application. Managed project scope and resources, employing agile methodologies for on-time, on-budget delivery. Achievements include intuitive UI design, robust security, and performance optimization. Demonstrated strong leadership and technical expertise in delivering impactful digital solutions.',
+    },
+    {
+      id: uuid(),
+      name: 'Unity Game',
+      description:
+        'Oversaw the development and launch of a Unity game project, showcasing strong project management skills. Successfully managed resources, schedules, and budgets to ensure on-time and within-budget delivery. Key accomplishments include designing immersive gameplay, optimizing performance, and enhancing user engagement.',
+    },
+  ],
 }
