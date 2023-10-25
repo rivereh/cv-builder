@@ -8,7 +8,7 @@ export const defaultUser = {
   location: 'Seattle, WA',
   education: {
     universityName: 'University of Washington',
-    degree: 'Bachelors in Computer Science',
+    degree: 'Bachelor of Science in Computer Science',
     startDate: '01/2020',
     endDate: '03/2023',
     location: 'Seattle, WA',

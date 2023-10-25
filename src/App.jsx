@@ -7,13 +7,24 @@ import Gallery from './Gallery'
 import Form from './Form'
 import { defaultUser } from './defaultUser'
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone'
+import DeleteIcon from '@mui/icons-material/Delete'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import EmailIcon from '@mui/icons-material/Email'
+import AddIcon from '@mui/icons-material/Add'
 import EducationForm from './EducationForm'
 import ExperienceSection from './ExperienceSection'
 import InputField from './components/InputField'
 import ExperienceForm from './ExperienceForm'
 import { buttonBaseClasses } from '@mui/material'
+import { TextField } from '@mui/material'
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import Typography from '@mui/material/Typography'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Stack from '@mui/material/Stack'
+import TextareaAutosize from '@mui/material/TextareaAutosize'
+import Button from '@mui/material/Button'
 
 function App() {
   const [userInfo, setUserInfo] = useState(defaultUser)
@@ -24,6 +35,11 @@ function App() {
   const [mobile, setMobile] = useState(userInfo.mobile)
   const [location, setLocation] = useState(userInfo.location)
   const [experiences, setExperiences] = useState(userInfo.experiences)
+  const [expanded, setExpanded] = useState('')
+
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false)
+  }
 
   function handleEducationFormChange(e) {
     const { key } = e.target.dataset
@@ -57,8 +73,8 @@ function App() {
   }
 
   function handleExperienceFormChange(e) {
-    const key = e.target.getAttribute('data-key')
-    const id = e.target.getAttribute('id')
+    const key = e.target.name
+    const id = e.target.id
     const value = e.target.value
 
     setExperiences((prevExperiences) => {
@@ -98,37 +114,53 @@ function App() {
   return (
     <div className='container'>
       <div className='forms'>
-        <form onSubmit={(e) => e.preventDefault()}>
-          <input
-            placeholder='FirstName'
-            value={firstName}
-            onChange={handleFirstNameChange}
-          />
-          <input
-            placeholder='Last name'
-            value={lastName}
-            onChange={handleLastNameChange}
-          />
-          {/* <br /> */}
-          <input
-            placeholder='Email'
-            value={email}
-            onChange={handleEmailChange}
-          />
-          {/* <br /> */}
-          <input
-            placeholder='Phone number'
-            value={mobile}
-            onChange={handleMobileChange}
-          />
-          {/* <br /> */}
-          <input
-            placeholder='Location'
-            value={location}
-            onChange={handleLocationChange}
-          />
-          {/* <button onClick={handleReset}>Reset</button> */}
-        </form>
+        <Accordion defaultExpanded={true}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography>Personal Info</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Stack spacing={2}>
+              <Stack direction='row' spacing={1}>
+                <TextField
+                  value={firstName}
+                  id='outlined-basic'
+                  label='First name'
+                  variant='outlined'
+                  onChange={handleFirstNameChange}
+                />
+                <TextField
+                  value={lastName}
+                  id='outlined-basic'
+                  label='Last name'
+                  variant='outlined'
+                  onChange={handleLastNameChange}
+                />
+              </Stack>
+              <TextField
+                value={email}
+                id='outlined-basic'
+                label='Email'
+                variant='outlined'
+                onChange={handleEmailChange}
+              />
+              <TextField
+                value={mobile}
+                id='outlined-basic'
+                label='Phone number'
+                variant='outlined'
+                onChange={handleMobileChange}
+              />
+              <TextField
+                value={location}
+                id='outlined-basic'
+                label='Location'
+                variant='outlined'
+                onChange={handleLocationChange}
+              />
+            </Stack>
+          </AccordionDetails>
+        </Accordion>
+        {/* <button onClick={handleReset}>Reset</button> */}
 
         <EducationForm
           educationInfo={educationInfo}
@@ -136,65 +168,83 @@ function App() {
         />
 
         <h2>Experiences</h2>
-        {/* <ExperienceSection
-        addExperienceForm={addExperienceForm}
-        experiences={experienceInfo}
-      /> */}
 
-        <form onSubmit={(e) => e.preventDefault()}>
-          {experiences.map((experience) => (
-            // <ExperienceForm key={experience.id} experience={experience} />
-            <div key={experience.id} className='experience-form'>
-              <input
-                placeholder='Employer'
-                value={experience.employer}
-                data-key='employer'
-                id={experience.id}
-                onChange={handleExperienceFormChange}
-              />
-              <input
-                placeholder='Position'
-                value={experience.position}
-                data-key='position'
-                id={experience.id}
-                onChange={handleExperienceFormChange}
-              />
-              <input
-                placeholder='Start Date'
-                value={experience.startDate}
-                data-key='startDate'
-                id={experience.id}
-                onChange={handleExperienceFormChange}
-              />
-              <input
-                placeholder='End date'
-                value={experience.endDate}
-                data-key='endDate'
-                id={experience.id}
-                onChange={handleExperienceFormChange}
-              />
-              <input
-                placeholder='Location'
-                value={experience.location}
-                data-key='location'
-                id={experience.id}
-                onChange={handleExperienceFormChange}
-              />
-              <textarea
-                onChange={handleExperienceFormChange}
-                data-key='description'
-                value={experience.description}
-                id={experience.id}
-                rows='5'
-              ></textarea>
-              <button id={experience.id} onClick={handleRemoveExperienceForm}>
-                X
-              </button>
-            </div>
-          ))}
-          <button onClick={handleAddExperienceForm}>Add Experience</button>
-        </form>
-        {/* <InputField type="text" placeholder="Name"></InputField> */}
+        {experiences.map((experience) => (
+          // <ExperienceForm key={experience.id} experience={experience} />
+          <div key={experience.id} className='experience-form'>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography>{experience.employer ? experience.employer : 'Experience'}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Stack spacing={2}>
+                  <TextField
+                    value={experience.employer}
+                    label='Employer'
+                    name='employer'
+                    id={experience.id}
+                    onChange={handleExperienceFormChange}
+                  />
+                  <TextField
+                    value={experience.position}
+                    label='Position'
+                    name='position'
+                    id={experience.id}
+                    onChange={handleExperienceFormChange}
+                  />
+
+                  <Stack direction='row' spacing={1}>
+                    <TextField
+                      value={experience.startDate}
+                      label='Start Date'
+                      variant='outlined'
+                      name='startDate'
+                      id={experience.id}
+                      onChange={handleExperienceFormChange}
+                    />
+                    <TextField
+                      value={experience.endDate}
+                      label='End Date'
+                      name='endDate'
+                      id={experience.id}
+                      onChange={handleExperienceFormChange}
+                    />
+                  </Stack>
+                  <TextField
+                    value={experience.location}
+                    label='Location'
+                    name='location'
+                    id={experience.id}
+                    onChange={handleExperienceFormChange}
+                  />
+                  <TextareaAutosize
+                    minRows={3}
+                    value={experience.description}
+                    name='description'
+                    id={experience.id}
+                    onChange={handleExperienceFormChange}
+                  />
+                  <Button
+                    id={experience.id}
+                    onClick={handleRemoveExperienceForm}
+                    variant='contained'
+                    color='error'
+                    startIcon={<DeleteIcon />}
+                  >
+                    Delete Experience
+                  </Button>
+                </Stack>
+              </AccordionDetails>
+            </Accordion>
+          </div>
+        ))}
+        <Button
+          onClick={handleAddExperienceForm}
+          variant='contained'
+          startIcon={<AddIcon />}
+        >
+          Add Experience
+        </Button>
       </div>
       <div className='resume'>
         <div className='resume-header'>

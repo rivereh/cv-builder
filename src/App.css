@@ -14,10 +14,15 @@ html {
   background-color: #fff;
   width: 17cm;
   height: 22cm;
+  min-width: 17cm;
+  min-height: 22cm;
 }
 
 .forms {
   width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .experience {
@@ -37,7 +42,8 @@ html {
   font-size: 0.8rem;
 }
 
-.experience .position, .education-info .degree {
+.experience .position,
+.education-info .degree {
   font-style: italic;
   font-size: 0.9rem;
 }
@@ -53,12 +59,12 @@ html {
   font-weight: bold;
 }
 
-.forms input {
+/* .forms input {
   display: block;
   margin: 10px 0;
   padding: 5px;
   width: 100%;
-}
+} */
 
 .resume-header {
   width: 100%;
