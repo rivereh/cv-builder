@@ -6,6 +6,7 @@ import MonthList from './MonthList'
 import Gallery from './Gallery'
 import Form from './Form'
 import { defaultUser } from './defaultUser'
+import { clearUser } from './clearUser'
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone'
 import DeleteIcon from '@mui/icons-material/Delete'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
@@ -29,6 +30,8 @@ import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
+import jsPDF from 'jspdf'
+import html2canvas from 'html2canvas'
 
 function App() {
   const [userInfo, setUserInfo] = useState(defaultUser)
@@ -41,12 +44,8 @@ function App() {
   const [experiences, setExperiences] = useState(userInfo.experiences)
   const [projects, setProjects] = useState(userInfo.projects)
 
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false)
-  }
-
   function handleEducationFormChange(e) {
-    const { key } = e.target.dataset
+    const key = e.target.name
     setEducationInfo({ ...educationInfo, [key]: e.target.value })
   }
 
@@ -71,9 +70,48 @@ function App() {
   }
 
   function handleReset() {
+    setEducationInfo(clearUser.education)
     setFirstName('')
     setLastName('')
     setEmail('')
+    setMobile('')
+    setLocation('')
+    setExperiences([])
+    setProjects([])
+  }
+
+  function handleLoadDemo() {
+    setEducationInfo(defaultUser.education)
+    setFirstName(defaultUser.firstName)
+    setLastName(defaultUser.lastName)
+    setEmail(defaultUser.email)
+    setMobile(defaultUser.mobile)
+    setLocation(defaultUser.location)
+    setExperiences(defaultUser.experiences)
+    setProjects(defaultUser.projects)
+  }
+
+  function downloadPDF() {
+    const capture = document.querySelector('.resume')
+    const widthInCM = 17
+    const heightInCM = 22
+    const pdfWidth = widthInCM * 10
+    const pdfHeight = heightInCM * 10
+
+    capture.style.width = pdfWidth + 'mm'
+    capture.style.height = pdfHeight + 'mm'
+
+    html2canvas(capture, {
+      scale: 1.5,
+    }).then((canvas) => {
+      capture.style.width = widthInCM + 'cm'
+      capture.style.height = heightInCM + 'cm'
+
+      const imgData = canvas.toDataURL('image/jpeg', 1.0)
+      const doc = new jsPDF('p', 'mm', [pdfWidth, pdfHeight])
+      doc.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight)
+      doc.save('resume.pdf')
+    })
   }
 
   function handleExperienceFormChange(e) {
@@ -151,6 +189,36 @@ function App() {
   return (
     <div className='container'>
       <div className='forms'>
+        <Stack
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Button
+            onClick={handleLoadDemo}
+            variant='contained'
+            className='top-btns'
+          >
+            Load Demo Data
+          </Button>
+          <Button
+            onClick={handleReset}
+            variant='contained'
+            className='top-btns'
+          >
+            Clear All Fields
+          </Button>
+          <Button
+            onClick={downloadPDF}
+            variant='contained'
+            className='top-btns'
+          >
+            Download PDF
+          </Button>
+        </Stack>
+
         <Accordion defaultExpanded={true}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>Personal Info</Typography>
@@ -332,10 +400,13 @@ function App() {
           onClick={handleAddProjectForm}
           variant='contained'
           startIcon={<AddIcon />}
+          sx={{ marginBottom: 2 }}
         >
           Add Project
         </Button>
       </div>
+
+      <div className='resume-spacer'></div>
       <div className='resume'>
         <div className='resume-header'>
           <h1>
@@ -359,50 +430,66 @@ function App() {
             )}
           </div>
         </div>
-        <div className='education'>
-          <h3>Education</h3>
-          <div className='education-info'>
-            <div className='left-side'>
-              <p className='bold'>{educationInfo.universityName}</p>
-              <p className='degree'>{educationInfo.degree}</p>
-            </div>
-            <div className='right-side'>
-              <p>
-                {educationInfo.startDate} - {educationInfo.endDate}
-              </p>
-              <p>{educationInfo.location}</p>
+
+        {(educationInfo.universityName ||
+          educationInfo.degree ||
+          educationInfo.startDate ||
+          educationInfo.endDate ||
+          educationInfo.location) && (
+          <div className='education'>
+            <h3>Education</h3>
+            <div className='education-info'>
+              <div className='left-side'>
+                <p className='bold'>{educationInfo.universityName}</p>
+                <p className='degree'>{educationInfo.degree}</p>
+              </div>
+              <div className='right-side'>
+                {(educationInfo.startDate || educationInfo.endDate) && (
+                  <p>
+                    {educationInfo.startDate} - {educationInfo.endDate}
+                  </p>
+                )}
+
+                <p>{educationInfo.location}</p>
+              </div>
             </div>
           </div>
-        </div>
-        <div className='experiences'>
-          <h3>Experience</h3>
-          {experiences.map((experience) => (
-            <div key={experience.id} className='experience'>
-              <div className='experience-info'>
-                <div className='left-side'>
-                  <p className='bold'>{experience.employer}</p>
-                  <p className='position'>{experience.position}</p>
+        )}
+
+        {experiences.length > 0 && (
+          <div className='experiences'>
+            <h3>Experience</h3>
+            {experiences.map((experience) => (
+              <div key={experience.id} className='experience'>
+                <div className='experience-info'>
+                  <div className='left-side'>
+                    <p className='bold'>{experience.employer}</p>
+                    <p className='position'>{experience.position}</p>
+                  </div>
+                  <div className='right-side'>
+                    <p>
+                      {experience.startDate} - {experience.endDate}
+                    </p>
+                    <p>{experience.location}</p>
+                  </div>
                 </div>
-                <div className='right-side'>
-                  <p>
-                    {experience.startDate} - {experience.endDate}
-                  </p>
-                  <p>{experience.location}</p>
-                </div>
+                <p className='description'>{experience.description}</p>
               </div>
-              <p className='description'>{experience.description}</p>
-            </div>
-          ))}
-        </div>
-        <div className='experiences'>
-          <h3>Software Projects</h3>
-          {projects.map((project) => (
-            <div key={project.id} className='experience'>
-              <p className='bold'>{project.name}</p>
-              <p className='description'>{project.description}</p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
+
+        {projects.length > 0 && (
+          <div className='experiences'>
+            <h3>Software Projects</h3>
+            {projects.map((project) => (
+              <div key={project.id} className='experience'>
+                <p className='bold'>{project.name}</p>
+                <p className='description'>{project.description}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

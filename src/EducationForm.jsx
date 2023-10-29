@@ -19,7 +19,7 @@ const EducationForm = ({ educationInfo, onChange }) => {
             id='outlined-basic'
             label='University'
             variant='outlined'
-            data-key='universityName'
+            name='universityName'
             onChange={onChange}
           />
           <TextField
@@ -27,7 +27,7 @@ const EducationForm = ({ educationInfo, onChange }) => {
             id='outlined-basic'
             label='Degree'
             variant='outlined'
-            data-key='degree'
+            name='degree'
             onChange={onChange}
           />
           <Stack direction='row' spacing={1}>
@@ -36,7 +36,7 @@ const EducationForm = ({ educationInfo, onChange }) => {
               id='outlined-basic'
               label='Start Date'
               variant='outlined'
-              data-key='startDate'
+              name='startDate'
               onChange={onChange}
             />
             <TextField
@@ -44,7 +44,7 @@ const EducationForm = ({ educationInfo, onChange }) => {
               id='outlined-basic'
               label='End Date'
               variant='outlined'
-              data-key='startDate'
+              name='endDate'
               onChange={onChange}
             />
           </Stack>
@@ -54,6 +54,7 @@ const EducationForm = ({ educationInfo, onChange }) => {
             id='outlined-basic'
             label='Location'
             variant='outlined'
+            name='location'
             onChange={onChange}
           />
         </Stack>

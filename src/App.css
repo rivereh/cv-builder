@@ -1,25 +1,41 @@
 html {
-  background-color: #ccc;
+  background-color: #eee;
   font-family: 'Segoe UI';
 }
 
 .container {
-  padding-top: 2rem;
+  margin: 4rem 0;
   display: flex;
   justify-content: center;
   gap: 2rem;
 }
 
 .resume {
+  position: fixed;
+  margin-left: 450px;
   background-color: #fff;
+  width: 17cm;
+  height: 22cm;
+  min-width: 17cm;
+  min-height: 22cm;
+  overflow: hidden;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.resume-spacer {
   width: 17cm;
   height: 22cm;
   min-width: 17cm;
   min-height: 22cm;
 }
 
+.top-btns {
+  font-size: 0.7rem !important;
+}
+
 .forms {
   width: 400px;
+  min-width: 400px;
   display: flex;
   flex-direction: column;
   gap: 10px;
