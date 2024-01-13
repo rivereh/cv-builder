@@ -18,6 +18,8 @@
     "@fontsource/roboto": "^5.0.8",
     "@mui/icons-material": "^5.14.12",
     "@mui/material": "^5.14.12",
+    "@mui/x-date-pickers": "^6.19.0",
+    "dayjs": "^1.11.10",
     "html2canvas": "^1.4.1",
     "html2pdf.js": "^0.10.1",
     "jspdf": "^2.5.1",

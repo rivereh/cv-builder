@@ -9,8 +9,8 @@ export const defaultUser = {
   education: {
     universityName: 'University of Washington',
     degree: 'Bachelor of Science in Computer Science',
-    startDate: '01/2020',
-    endDate: '03/2023',
+    startDate: '2020-1',
+    endDate: '2023-3',
     location: 'Seattle, WA',
   },
   experiences: [
@@ -18,8 +18,8 @@ export const defaultUser = {
       id: uuid(),
       employer: 'Microsoft',
       position: 'Software Engineer Intern',
-      startDate: '06/2019',
-      endDate: '09/2019',
+      startDate: '2019-6',
+      endDate: '2019-9',
       location: 'Redmond, WA',
       description:
         'As a Full-Stack Software Engineer, I designed and maintained end-to-end web applications using technologies like React and Node.js, collaborating closely with cross-functional teams to deliver features on schedule, and optimizing performance through RESTful APIs and efficient database queries.',
@@ -28,8 +28,8 @@ export const defaultUser = {
       id: uuid(),
       employer: 'Apple',
       position: 'Jr. Software Engineer',
-      startDate: '03/2023',
-      endDate: 'present',
+      startDate: '2023-3',
+      endDate: '2024-2',
       location: 'Seattle, WA',
       description:
         'In my role as a Front-End Developer, I created responsive user interfaces with HTML, CSS, and JavaScript, ensuring a seamless user experience while integrating third-party APIs and libraries to enhance website functionality. I also conducted usability testing and addressed front-end issues to improve load times and overall usability.',

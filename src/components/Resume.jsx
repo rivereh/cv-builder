@@ -1,15 +1,9 @@
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import EmailIcon from '@mui/icons-material/Email'
+import dayjs from 'dayjs'
 
 const Resume = ({ userInfo, educationInfo, experiences, projects }) => {
-  function checkOverflow() {
-    console.log(
-      document.querySelector('.resume').scrollHeight >
-        document.querySelector('.resume').clientHeight
-    )
-  }
-
   return (
     <div className='resume'>
       <div className='resume-header'>
@@ -50,7 +44,8 @@ const Resume = ({ userInfo, educationInfo, experiences, projects }) => {
             <div className='right-side'>
               {(educationInfo.startDate || educationInfo.endDate) && (
                 <p>
-                  {educationInfo.startDate} - {educationInfo.endDate}
+                  {dayjs(educationInfo.startDate).format('MMM YYYY')} -{' '}
+                  {dayjs(educationInfo.endDate).format('MMM YYYY')}
                 </p>
               )}
 
@@ -72,7 +67,8 @@ const Resume = ({ userInfo, educationInfo, experiences, projects }) => {
                 </div>
                 <div className='right-side'>
                   <p>
-                    {experience.startDate} - {experience.endDate}
+                    {dayjs(experience.startDate).format('MMM YYYY')} -{' '}
+                    {dayjs(experience.endDate).format('MMM YYYY')}
                   </p>
                   <p>{experience.location}</p>
                 </div>

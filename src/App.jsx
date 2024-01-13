@@ -24,7 +24,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Stack from '@mui/material/Stack'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
 import Button from '@mui/material/Button'
-
+import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
@@ -32,6 +34,7 @@ import '@fontsource/roboto/700.css'
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import Resume from './components/Resume'
+import dayjs from 'dayjs'
 
 function App() {
   const [userInfo, setUserInfo] = useState(defaultUser)
@@ -40,9 +43,12 @@ function App() {
   const [projects, setProjects] = useState(userInfo.projects)
   const [resumeOverflow, setResumeOverflow] = useState(false)
 
-  function handleEducationFormChange(e) {
-    const key = e.target.name
-    setEducationInfo({ ...educationInfo, [key]: e.target.value })
+  function handleEducationFormChange(e, id) {
+    if (id) {
+      setEducationInfo({ ...educationInfo, [id]: dayjs(e).format('YYYY-M') })
+    } else {
+      setEducationInfo({ ...educationInfo, [e.target.name]: e.target.value })
+    }
   }
 
   function handleUserInfoChange(e) {
@@ -104,19 +110,33 @@ function App() {
     })
   }
 
-  function handleExperienceFormChange(e) {
-    const key = e.target.name
-    const id = e.target.id
-    const value = e.target.value
+  function handleExperienceFormChange(e, name, id) {
+    if (name) {
+      const key = name
+      const value = dayjs(e).format('YYYY-M')
 
-    setExperiences((prevExperiences) => {
-      return prevExperiences.map((experience) => {
-        if (experience.id == id) {
-          return { ...experience, [key]: value }
-        }
-        return experience
+      setExperiences((prevExperiences) => {
+        return prevExperiences.map((experience) => {
+          if (experience.id == id) {
+            return { ...experience, [key]: value }
+          }
+          return experience
+        })
       })
-    })
+    } else {
+      const key = e.target.name
+      const id = e.target.id
+      const value = e.target.value
+
+      setExperiences((prevExperiences) => {
+        return prevExperiences.map((experience) => {
+          if (experience.id == id) {
+            return { ...experience, [key]: value }
+          }
+          return experience
+        })
+      })
+    }
 
     checkResumeOverflow()
   }
@@ -181,244 +201,253 @@ function App() {
   }
 
   return (
-    <div className='container'>
-      <div className='forms'>
-        <Stack
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Button
-            onClick={handleLoadDemo}
-            variant='contained'
-            className='top-btns'
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <div className='container'>
+        <div className='forms'>
+          <Stack
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
           >
-            Load Demo Data
-          </Button>
-          <Button
-            onClick={handleReset}
-            variant='contained'
-            className='top-btns'
-          >
-            Clear All Fields
-          </Button>
-          <Button
-            onClick={downloadPDF}
-            variant='contained'
-            className='top-btns'
-          >
-            Download PDF
-          </Button>
-        </Stack>
+            <Button
+              onClick={handleLoadDemo}
+              variant='contained'
+              className='top-btns'
+            >
+              Load Demo Data
+            </Button>
+            <Button
+              onClick={handleReset}
+              variant='contained'
+              className='top-btns'
+            >
+              Clear All Fields
+            </Button>
+            <Button
+              onClick={downloadPDF}
+              variant='contained'
+              className='top-btns'
+            >
+              Download PDF
+            </Button>
+          </Stack>
 
-        {resumeOverflow && (
-          <Alert severity='error'>
-            Data overflow detected, some info may be cut off!
-          </Alert>
-        )}
+          {resumeOverflow && (
+            <Alert severity='error'>
+              Data overflow detected, some info may be cut off!
+            </Alert>
+          )}
 
-        <Accordion defaultExpanded={true}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>Personal Info</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Stack spacing={2}>
-              <Stack direction='row' spacing={1}>
+          <Accordion defaultExpanded={true}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography>Personal Info</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Stack spacing={2}>
+                <Stack direction='row' spacing={1}>
+                  <TextField
+                    value={userInfo.firstName}
+                    id='outlined-basic'
+                    label='First name'
+                    variant='outlined'
+                    name='firstName'
+                    onChange={handleUserInfoChange}
+                  />
+                  <TextField
+                    value={userInfo.lastName}
+                    id='outlined-basic'
+                    label='Last name'
+                    variant='outlined'
+                    name='lastName'
+                    onChange={handleUserInfoChange}
+                  />
+                </Stack>
                 <TextField
-                  value={userInfo.firstName}
+                  value={userInfo.email}
                   id='outlined-basic'
-                  label='First name'
+                  label='Email'
                   variant='outlined'
-                  name='firstName'
+                  name='email'
                   onChange={handleUserInfoChange}
                 />
                 <TextField
-                  value={userInfo.lastName}
+                  value={userInfo.mobile}
                   id='outlined-basic'
-                  label='Last name'
+                  label='Phone number'
                   variant='outlined'
-                  name='lastName'
+                  name='mobile'
+                  onChange={handleUserInfoChange}
+                />
+                <TextField
+                  value={userInfo.location}
+                  id='outlined-basic'
+                  label='Location'
+                  variant='outlined'
+                  name='location'
                   onChange={handleUserInfoChange}
                 />
               </Stack>
-              <TextField
-                value={userInfo.email}
-                id='outlined-basic'
-                label='Email'
-                variant='outlined'
-                name='email'
-                onChange={handleUserInfoChange}
-              />
-              <TextField
-                value={userInfo.mobile}
-                id='outlined-basic'
-                label='Phone number'
-                variant='outlined'
-                name='mobile'
-                onChange={handleUserInfoChange}
-              />
-              <TextField
-                value={userInfo.location}
-                id='outlined-basic'
-                label='Location'
-                variant='outlined'
-                name='location'
-                onChange={handleUserInfoChange}
-              />
-            </Stack>
-          </AccordionDetails>
-        </Accordion>
-        {/* <button onClick={handleReset}>Reset</button> */}
+            </AccordionDetails>
+          </Accordion>
+          {/* <button onClick={handleReset}>Reset</button> */}
 
-        <EducationForm
-          educationInfo={educationInfo}
-          onChange={handleEducationFormChange}
-        />
+          <EducationForm
+            educationInfo={educationInfo}
+            onChange={handleEducationFormChange}
+          />
 
-        <Typography variant='h5' sx={{ marginTop: 1 }}>
-          Experiences
-        </Typography>
+          <Typography variant='h5' sx={{ marginTop: 1 }}>
+            Experiences
+          </Typography>
 
-        {experiences.map((experience) => (
-          // <ExperienceForm key={experience.id} experience={experience} />
-          <div key={experience.id} className='experience-form'>
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>
-                  {experience.employer ? experience.employer : 'Experience'}
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Stack spacing={2}>
-                  <TextField
-                    value={experience.employer}
-                    label='Employer'
-                    name='employer'
-                    id={experience.id}
-                    onChange={handleExperienceFormChange}
-                  />
-                  <TextField
-                    value={experience.position}
-                    label='Position'
-                    name='position'
-                    id={experience.id}
-                    onChange={handleExperienceFormChange}
-                  />
-
-                  <Stack direction='row' spacing={1}>
+          {experiences.map((experience) => (
+            // <ExperienceForm key={experience.id} experience={experience} />
+            <div key={experience.id} className='experience-form'>
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography>
+                    {experience.employer ? experience.employer : 'Experience'}
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Stack spacing={2}>
                     <TextField
-                      value={experience.startDate}
-                      label='Start Date'
-                      variant='outlined'
-                      name='startDate'
+                      value={experience.employer}
+                      label='Employer'
+                      name='employer'
                       id={experience.id}
                       onChange={handleExperienceFormChange}
                     />
                     <TextField
-                      value={experience.endDate}
-                      label='End Date'
-                      name='endDate'
+                      value={experience.position}
+                      label='Position'
+                      name='position'
                       id={experience.id}
                       onChange={handleExperienceFormChange}
                     />
+
+                    <Stack direction='row' spacing={1}>
+                      <MobileDatePicker
+                        label='Start Date'
+                        views={['year', 'month']}
+                        value={dayjs(educationInfo.startDate)}
+                        onChange={(newDate) =>
+                          handleExperienceFormChange(
+                            newDate,
+                            'startDate',
+                            experience.id
+                          )
+                        }
+                        format='MM-YYYY'
+                      />
+                      <MobileDatePicker
+                        label='End Date'
+                        views={['year', 'month']}
+                        value={dayjs(educationInfo.endDate)}
+                        onChange={(newDate) =>
+                          handleExperienceFormChange(newDate, 'endDate')
+                        }
+                        format='MM-YYYY'
+                      />
+                    </Stack>
+                    <TextField
+                      value={experience.location}
+                      label='Location'
+                      name='location'
+                      id={experience.id}
+                      onChange={handleExperienceFormChange}
+                    />
+                    <TextareaAutosize
+                      minRows={3}
+                      value={experience.description}
+                      name='description'
+                      id={experience.id}
+                      onChange={handleExperienceFormChange}
+                    />
+                    <Button
+                      id={experience.id}
+                      onClick={handleRemoveExperienceForm}
+                      variant='contained'
+                      color='error'
+                      startIcon={<DeleteIcon />}
+                    >
+                      Delete Experience
+                    </Button>
                   </Stack>
-                  <TextField
-                    value={experience.location}
-                    label='Location'
-                    name='location'
-                    id={experience.id}
-                    onChange={handleExperienceFormChange}
-                  />
-                  <TextareaAutosize
-                    minRows={3}
-                    value={experience.description}
-                    name='description'
-                    id={experience.id}
-                    onChange={handleExperienceFormChange}
-                  />
-                  <Button
-                    id={experience.id}
-                    onClick={handleRemoveExperienceForm}
-                    variant='contained'
-                    color='error'
-                    startIcon={<DeleteIcon />}
-                  >
-                    Delete Experience
-                  </Button>
-                </Stack>
-              </AccordionDetails>
-            </Accordion>
-          </div>
-        ))}
-        <Button
-          onClick={handleAddExperienceForm}
-          variant='contained'
-          startIcon={<AddIcon />}
-        >
-          Add Experience
-        </Button>
-        <Typography variant='h5' sx={{ marginTop: 1 }}>
-          Projects
-        </Typography>
-        {projects.map((project) => (
-          // <ExperienceForm key={experience.id} experience={experience} />
-          <div key={project.id} className='experience-form'>
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>
-                  {project.name ? project.name : 'Project'}
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Stack spacing={2}>
-                  <TextField
-                    value={project.name}
-                    label='Project Name'
-                    name='name'
-                    id={project.id}
-                    onChange={handleProjectFormChange}
-                  />
-                  <TextareaAutosize
-                    minRows={3}
-                    value={project.description}
-                    name='description'
-                    id={project.id}
-                    onChange={handleProjectFormChange}
-                  />
-                  <Button
-                    id={project.id}
-                    onClick={handleRemoveProjectForm}
-                    variant='contained'
-                    color='error'
-                    startIcon={<DeleteIcon />}
-                  >
-                    Delete Project
-                  </Button>
-                </Stack>
-              </AccordionDetails>
-            </Accordion>
-          </div>
-        ))}
-        <Button
-          onClick={handleAddProjectForm}
-          variant='contained'
-          startIcon={<AddIcon />}
-          sx={{ marginBottom: 2 }}
-        >
-          Add Project
-        </Button>
-      </div>
+                </AccordionDetails>
+              </Accordion>
+            </div>
+          ))}
+          <Button
+            onClick={handleAddExperienceForm}
+            variant='contained'
+            startIcon={<AddIcon />}
+          >
+            Add Experience
+          </Button>
+          <Typography variant='h5' sx={{ marginTop: 1 }}>
+            Projects
+          </Typography>
+          {projects.map((project) => (
+            // <ExperienceForm key={experience.id} experience={experience} />
+            <div key={project.id} className='experience-form'>
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography>
+                    {project.name ? project.name : 'Project'}
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Stack spacing={2}>
+                    <TextField
+                      value={project.name}
+                      label='Project Name'
+                      name='name'
+                      id={project.id}
+                      onChange={handleProjectFormChange}
+                    />
+                    <TextareaAutosize
+                      minRows={3}
+                      value={project.description}
+                      name='description'
+                      id={project.id}
+                      onChange={handleProjectFormChange}
+                    />
+                    <Button
+                      id={project.id}
+                      onClick={handleRemoveProjectForm}
+                      variant='contained'
+                      color='error'
+                      startIcon={<DeleteIcon />}
+                    >
+                      Delete Project
+                    </Button>
+                  </Stack>
+                </AccordionDetails>
+              </Accordion>
+            </div>
+          ))}
+          <Button
+            onClick={handleAddProjectForm}
+            variant='contained'
+            startIcon={<AddIcon />}
+            sx={{ marginBottom: 2 }}
+          >
+            Add Project
+          </Button>
+        </div>
 
-      <div className='resume-spacer'></div>
-      <Resume
-        userInfo={userInfo}
-        educationInfo={educationInfo}
-        experiences={experiences}
-        projects={projects}
-      />
-    </div>
+        <div className='resume-spacer'></div>
+        <Resume
+          userInfo={userInfo}
+          educationInfo={educationInfo}
+          experiences={experiences}
+          projects={projects}
+        />
+      </div>
+    </LocalizationProvider>
   )
 }
 

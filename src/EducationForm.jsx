@@ -5,6 +5,9 @@ import AccordionSummary from '@mui/material/AccordionSummary'
 import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Stack from '@mui/material/Stack'
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
+import { useState } from 'react'
+import dayjs from 'dayjs'
 
 const EducationForm = ({ educationInfo, onChange }) => {
   return (
@@ -31,21 +34,19 @@ const EducationForm = ({ educationInfo, onChange }) => {
             onChange={onChange}
           />
           <Stack direction='row' spacing={1}>
-            <TextField
-              value={educationInfo.startDate}
-              id='outlined-basic'
+            <MobileDatePicker
               label='Start Date'
-              variant='outlined'
-              name='startDate'
-              onChange={onChange}
+              views={['year', 'month']}
+              value={dayjs(educationInfo.startDate)}
+              onChange={(newDate) => onChange(newDate, 'startDate')}
+              format='MM-YYYY'
             />
-            <TextField
-              value={educationInfo.endDate}
-              id='outlined-basic'
+            <MobileDatePicker
               label='End Date'
-              variant='outlined'
-              name='endDate'
-              onChange={onChange}
+              views={['year', 'month']}
+              value={dayjs(educationInfo.endDate)}
+              onChange={(newDate) => onChange(newDate, 'endDate')}
+              format='MM-YYYY'
             />
           </Stack>
 
