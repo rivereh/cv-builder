@@ -3,6 +3,13 @@ import LocationOnIcon from '@mui/icons-material/LocationOn'
 import EmailIcon from '@mui/icons-material/Email'
 
 const Resume = ({ userInfo, educationInfo, experiences, projects }) => {
+  function checkOverflow() {
+    console.log(
+      document.querySelector('.resume').scrollHeight >
+        document.querySelector('.resume').clientHeight
+    )
+  }
+
   return (
     <div className='resume'>
       <div className='resume-header'>

@@ -47,8 +47,9 @@ function App() {
     setEducationInfo({ ...educationInfo, [key]: e.target.value })
   }
 
-  function handleFirstNameChange(e) {
-    setFirstName(e.target.value)
+  function handleUserInfoChange(e) {
+    const key = e.target.name
+    setUserInfo({ ...userInfo, [key]: e.target.value })
   }
 
   function handleLastNameChange(e) {
@@ -79,12 +80,8 @@ function App() {
   }
 
   function handleLoadDemo() {
+    setUserInfo(defaultUser)
     setEducationInfo(defaultUser.education)
-    setFirstName(defaultUser.firstName)
-    setLastName(defaultUser.lastName)
-    setEmail(defaultUser.email)
-    setMobile(defaultUser.mobile)
-    setLocation(defaultUser.location)
     setExperiences(defaultUser.experiences)
     setProjects(defaultUser.projects)
   }
@@ -221,40 +218,45 @@ function App() {
             <Stack spacing={2}>
               <Stack direction='row' spacing={1}>
                 <TextField
-                  value={firstName}
+                  value={userInfo.firstName}
                   id='outlined-basic'
                   label='First name'
                   variant='outlined'
-                  onChange={handleFirstNameChange}
+                  name='firstName'
+                  onChange={handleUserInfoChange}
                 />
                 <TextField
-                  value={lastName}
+                  value={userInfo.lastName}
                   id='outlined-basic'
                   label='Last name'
                   variant='outlined'
-                  onChange={handleLastNameChange}
+                  name='lastName'
+                  onChange={handleUserInfoChange}
                 />
               </Stack>
               <TextField
-                value={email}
+                value={userInfo.email}
                 id='outlined-basic'
                 label='Email'
                 variant='outlined'
-                onChange={handleEmailChange}
+                name='email'
+                onChange={handleUserInfoChange}
               />
               <TextField
-                value={mobile}
+                value={userInfo.mobile}
                 id='outlined-basic'
                 label='Phone number'
                 variant='outlined'
-                onChange={handleMobileChange}
+                name='mobile'
+                onChange={handleUserInfoChange}
               />
               <TextField
-                value={location}
+                value={userInfo.location}
                 id='outlined-basic'
                 label='Location'
                 variant='outlined'
-                onChange={handleLocationChange}
+                name='location'
+                onChange={handleUserInfoChange}
               />
             </Stack>
           </AccordionDetails>
