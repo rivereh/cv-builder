@@ -1,9 +1,6 @@
 import { useState } from 'react'
 import { v4 as uuid } from 'uuid'
 import './App.css'
-import TodoList from './TodoList'
-import MonthList from './MonthList'
-import Gallery from './Gallery'
 import Form from './Form'
 import { defaultUser } from './defaultUser'
 import { clearUser } from './clearUser'
@@ -32,6 +29,7 @@ import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
+import Resume from './components/Resume'
 
 function App() {
   const [userInfo, setUserInfo] = useState(defaultUser)
@@ -181,10 +179,6 @@ function App() {
     })
     setProjects(newProjects)
   }
-
-  // function addExperienceForm(experience) {
-  //   setExperienceInfo([...experiences, { id: uuid(), ...experience }])
-  // }
 
   return (
     <div className='container'>
@@ -407,90 +401,12 @@ function App() {
       </div>
 
       <div className='resume-spacer'></div>
-      <div className='resume'>
-        <div className='resume-header'>
-          <h1>
-            {firstName} {lastName}
-          </h1>
-          <div className='info'>
-            {email && (
-              <p className='info-item'>
-                <EmailIcon sx={{ width: 16, height: 16 }} /> {email}
-              </p>
-            )}
-            {mobile && (
-              <p className='info-item'>
-                <LocalPhoneIcon sx={{ fontSize: 16 }} /> {mobile}
-              </p>
-            )}
-            {location && (
-              <p className='info-item'>
-                <LocationOnIcon sx={{ fontSize: 16 }} /> {location}
-              </p>
-            )}
-          </div>
-        </div>
-
-        {(educationInfo.universityName ||
-          educationInfo.degree ||
-          educationInfo.startDate ||
-          educationInfo.endDate ||
-          educationInfo.location) && (
-          <div className='education'>
-            <h3>Education</h3>
-            <div className='education-info'>
-              <div className='left-side'>
-                <p className='bold'>{educationInfo.universityName}</p>
-                <p className='degree'>{educationInfo.degree}</p>
-              </div>
-              <div className='right-side'>
-                {(educationInfo.startDate || educationInfo.endDate) && (
-                  <p>
-                    {educationInfo.startDate} - {educationInfo.endDate}
-                  </p>
-                )}
-
-                <p>{educationInfo.location}</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {experiences.length > 0 && (
-          <div className='experiences'>
-            <h3>Experience</h3>
-            {experiences.map((experience) => (
-              <div key={experience.id} className='experience'>
-                <div className='experience-info'>
-                  <div className='left-side'>
-                    <p className='bold'>{experience.employer}</p>
-                    <p className='position'>{experience.position}</p>
-                  </div>
-                  <div className='right-side'>
-                    <p>
-                      {experience.startDate} - {experience.endDate}
-                    </p>
-                    <p>{experience.location}</p>
-                  </div>
-                </div>
-                <p className='description'>{experience.description}</p>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {projects.length > 0 && (
-          <div className='experiences'>
-            <h3>Software Projects</h3>
-            {projects.map((project) => (
-              <div key={project.id} className='experience'>
-                <p className='bold'>{project.name}</p>
-                <p className='description'>{project.description}</p>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      <Resume
+        userInfo={userInfo}
+        educationInfo={educationInfo}
+        experiences={experiences}
+        projects={projects}
+      />
     </div>
   )
 }
