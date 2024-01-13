@@ -13,6 +13,7 @@ import EducationForm from './EducationForm'
 import ExperienceSection from './ExperienceSection'
 import InputField from './components/InputField'
 import ExperienceForm from './ExperienceForm'
+import Alert from '@mui/material/Alert'
 import { buttonBaseClasses } from '@mui/material'
 import { TextField } from '@mui/material'
 import Accordion from '@mui/material/Accordion'
@@ -23,6 +24,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Stack from '@mui/material/Stack'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
 import Button from '@mui/material/Button'
+
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
@@ -34,13 +36,9 @@ import Resume from './components/Resume'
 function App() {
   const [userInfo, setUserInfo] = useState(defaultUser)
   const [educationInfo, setEducationInfo] = useState(userInfo.education)
-  const [firstName, setFirstName] = useState(userInfo.firstName)
-  const [lastName, setLastName] = useState(userInfo.lastName)
-  const [email, setEmail] = useState(userInfo.email)
-  const [mobile, setMobile] = useState(userInfo.mobile)
-  const [location, setLocation] = useState(userInfo.location)
   const [experiences, setExperiences] = useState(userInfo.experiences)
   const [projects, setProjects] = useState(userInfo.projects)
+  const [resumeOverflow, setResumeOverflow] = useState(false)
 
   function handleEducationFormChange(e) {
     const key = e.target.name
@@ -52,20 +50,17 @@ function App() {
     setUserInfo({ ...userInfo, [key]: e.target.value })
   }
 
-  function handleLastNameChange(e) {
-    setLastName(e.target.value)
-  }
-
-  function handleEmailChange(e) {
-    setEmail(e.target.value)
-  }
-
-  function handleMobileChange(e) {
-    setMobile(e.target.value)
-  }
-
-  function handleLocationChange(e) {
-    setLocation(e.target.value)
+  function checkResumeOverflow() {
+    setTimeout(() => {
+      if (
+        document.querySelector('.resume').scrollHeight >
+        document.querySelector('.resume').clientHeight
+      ) {
+        setResumeOverflow(true)
+      } else {
+        setResumeOverflow(false)
+      }
+    }, 1000)
   }
 
   function handleReset() {
@@ -122,6 +117,8 @@ function App() {
         return experience
       })
     })
+
+    checkResumeOverflow()
   }
 
   function handleProjectFormChange(e) {
@@ -137,6 +134,8 @@ function App() {
         return project
       })
     })
+
+    checkResumeOverflow()
   }
 
   function handleAddExperienceForm() {
@@ -150,6 +149,7 @@ function App() {
       description: '',
     }
     setExperiences([...experiences, newExperience])
+    checkResumeOverflow()
   }
 
   function handleAddProjectForm() {
@@ -159,6 +159,7 @@ function App() {
       description: '',
     }
     setProjects([...projects, newProject])
+    checkResumeOverflow()
   }
 
   function handleRemoveExperienceForm(e) {
@@ -167,6 +168,7 @@ function App() {
       return experience.id !== id
     })
     setExperiences(newExperiences)
+    checkResumeOverflow()
   }
 
   function handleRemoveProjectForm(e) {
@@ -175,6 +177,7 @@ function App() {
       return experience.id !== id
     })
     setProjects(newProjects)
+    checkResumeOverflow()
   }
 
   return (
@@ -209,6 +212,12 @@ function App() {
             Download PDF
           </Button>
         </Stack>
+
+        {resumeOverflow && (
+          <Alert severity='error'>
+            Data overflow detected, some info may be cut off!
+          </Alert>
+        )}
 
         <Accordion defaultExpanded={true}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
